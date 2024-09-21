@@ -50,6 +50,4 @@ export default {
 };
 </script>
 
-<style>
-/* Qui puoi aggiungere il tuo stile */
-</style>
+<style></style>

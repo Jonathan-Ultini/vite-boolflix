@@ -1,9 +1,12 @@
 <template>
   <div>
-    <h2>Lista Film</h2>
+    <h2>Risultati della Ricerca</h2>
     <ul>
-      <li v-for="movie in movies" :key="movie.id">
-        {{ movie.title }} ({{ movie.release_date }})
+      <li v-for="(movie, index) in movies" :key="index">
+        <h3>{{ movie.title }}</h3>
+        <p><strong>Titolo Originale:</strong> {{ movie.original_title }}</p>
+        <p><strong>Lingua:</strong> {{ movie.original_language }}</p>
+        <p><strong>Voto:</strong> {{ movie.vote_average }}</p>
       </li>
     </ul>
   </div>
@@ -13,13 +16,19 @@
 export default {
   name: 'MovieList',
   props: {
-    movies: Array  // Riceve i film come prop
+    movies: Array  // Accetta la lista dei film come props
   }
 };
 </script>
 
 <style scoped>
-h2 {
-  color: green;
+/* Stile per la lista dei film */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 20px;
 }
 </style>
