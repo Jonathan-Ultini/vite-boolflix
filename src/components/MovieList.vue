@@ -1,17 +1,18 @@
-<!-- Componente che riceve i risultati della ricerca come props e li visualizza sotto forma di lista. -->
+<template>
+  <div>
+    <h2>Movie List</h2>
+    <p>Qui verranno mostrati i film.</p>
+  </div>
+</template>
 
 <script>
 export default {
-  data() {
-    return {
-
-    }
-  }
-}
+  name: 'MovieList'
+};
 </script>
 
-<template>
-
-</template>
-
-<style scoped></style>
+<style scoped>
+h2 {
+  color: green;
+}
+</style>

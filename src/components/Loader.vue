@@ -1,17 +1,17 @@
-<!-- Componente che mostra un indicatore di caricamento durante la chiamata API. -->
+<template>
+  <div>
+    <h2>Loading...</h2>
+  </div>
+</template>
 
 <script>
 export default {
-  data() {
-    return {
-
-    }
-  }
-}
+  name: 'Loader'
+};
 </script>
 
-<template>
-
-</template>
-
-<style scoped></style>
+<style scoped>
+h2 {
+  color: red;
+}
+</style>

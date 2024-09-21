@@ -1,17 +1,19 @@
-<!-- Componente per l'input dell'utente, dove verrà inserita la query di ricerc -->
+<template>
+  <div>
+    <h2>Search Bar</h2>
+    <input type="text" placeholder="Cerca un film..." />
+  </div>
+</template>
 
 <script>
 export default {
-  data() {
-    return {
-
-    }
-  }
-}
+  name: 'SearchBar'
+};
 </script>
 
-<template>
-
-</template>
-
-<style scoped></style>
+<style scoped>
+/* Stile locale per SearchBar */
+h2 {
+  color: blue;
+}
+</style>
