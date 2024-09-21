@@ -1,13 +1,20 @@
 <template>
   <div>
-    <h2>Movie List</h2>
-    <p>Qui verranno mostrati i film.</p>
+    <h2>Lista Film</h2>
+    <ul>
+      <li v-for="movie in movies" :key="movie.id">
+        {{ movie.title }} ({{ movie.release_date }})
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MovieList'
+  name: 'MovieList',
+  props: {
+    movies: Array  // Riceve i film come prop
+  }
 };
 </script>
 
