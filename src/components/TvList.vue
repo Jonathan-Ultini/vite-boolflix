@@ -18,13 +18,21 @@
         </p>
 
         <p><strong>Voto:</strong> {{ tvShow.vote_average }}</p>
+
+        <div>
+          <span v-for="star in 5" :key="star" class="star">
+            <i v-if="star <= getStarRating(tvShow.vote_average)" class="fas fa-star stars"></i>
+            <i v-else class="far fa-star stars"></i>
+          </span>
+        </div>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { useFlag } from '../composables/useFlag'; // Importa il composable
+import { useFlag } from '../composables/useFlag';
+import { useRating } from '../composables/useRatings';
 
 export default {
   name: 'TvList',
@@ -32,8 +40,13 @@ export default {
     tvShows: Array
   },
   setup() {
-    const { getFlagUrl } = useFlag(); // Usa il composable
-    return { getFlagUrl };
+    const { getFlagUrl } = useFlag();
+    const { getStarRating } = useRating();
+
+    return {
+      getFlagUrl,
+      getStarRating
+    };
   }
 };
 </script>
@@ -54,5 +67,10 @@ h2 {
 
 h3 {
   color: orange;
+}
+
+.stars {
+  color: gold;
+  font-size: 20px;
 }
 </style>

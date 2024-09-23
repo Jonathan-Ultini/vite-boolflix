@@ -3,7 +3,6 @@
     <h2>Search Bar</h2>
     <input type="text" v-model="searchQuery" placeholder="Cerca un film..." @keyup.enter="submitSearch" />
     <button @click="submitSearch">Cerca</button>
-    <!-- <p>{{ searchQuery }}</p> -->
   </div>
 </template>
 
@@ -12,12 +11,12 @@ export default {
   name: 'SearchBar',
   data() {
     return {
-      searchQuery: ''  // Memorizza la query di ricerca inserita dall'utente
+      searchQuery: ''
     };
   },
   methods: {
     submitSearch() {
-      this.$emit('search-query', this.searchQuery);  // Emette un evento con la query di ricerca
+      this.$emit('search-query', this.searchQuery);
     }
   }
 };

@@ -15,7 +15,13 @@
           <span v-else>Non disponibile</span>
         </p>
 
-        <p><strong>Voto:</strong> {{ movie.vote_average }}</p>
+        <p><strong>Voto:</strong>
+          <span class="stars">
+            <i v-for="star in getStarRating(movie.vote_average)" :key="'filled-' + star" class="fas fa-star"></i>
+            <i v-for="star in 5 - getStarRating(movie.vote_average)" :key="'empty-' + star" class="far fa-star"></i>
+          </span>
+        </p>
+
         <p><strong>Data di uscita:</strong> {{ movie.release_date }}</p>
       </li>
     </ul>
@@ -23,7 +29,8 @@
 </template>
 
 <script>
-import { useFlag } from '../composables/useFlag'; // Importa il composable
+import { useFlag } from '../composables/useFlag';
+import { useRating } from '../composables/useRatings';
 
 export default {
   name: 'MovieList',
@@ -31,11 +38,10 @@ export default {
     movies: Array
   },
   setup() {
-    const { getFlagUrl } = useFlag(); // Usa il composable per la bandiera
+    const { getFlagUrl } = useFlag();
+    const { getStarRating } = useRating();
 
-    // Corregge il codice ISO-639-1 (lingua) per farlo funzionare come codice ISO-3166-1 (paese) per le bandiere
     function getFlagUrlMovie(originalLanguage) {
-      // Mappatura di alcune lingue comuni ai codici di paese ISO 3166-1
       const languageToCountryCodeMap = {
         en: 'us',
         ja: 'jp',
@@ -45,7 +51,10 @@ export default {
       return getFlagUrl(countryCode);
     }
 
-    return { getFlagUrl: getFlagUrlMovie };
+    return {
+      getFlagUrl: getFlagUrlMovie,
+      getStarRating
+    };
   }
 };
 </script>
@@ -66,5 +75,10 @@ h2 {
 
 h3 {
   color: greenyellow;
+}
+
+.stars {
+  color: gold;
+  font-size: 20px;
 }
 </style>
