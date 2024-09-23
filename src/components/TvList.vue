@@ -24,19 +24,16 @@
 </template>
 
 <script>
+import { useFlag } from '../composables/useFlag'; // Importa il composable
+
 export default {
   name: 'TvList',
   props: {
     tvShows: Array
   },
-  methods: {
-    getFlagUrl(countryCode) {
-      if (countryCode) {
-        // Costruisce l'URL dell'immagine della bandiera utilizzando l'API di Flagpedia
-        return `https://flagcdn.com/w320/${countryCode.toLowerCase()}.png`;
-      }
-      return null; // Se non c'è un codice paese valido, restituisce null
-    }
+  setup() {
+    const { getFlagUrl } = useFlag(); // Usa il composable
+    return { getFlagUrl };
   }
 };
 </script>
