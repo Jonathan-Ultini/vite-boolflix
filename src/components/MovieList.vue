@@ -3,6 +3,7 @@
     <h2>Risultati Film</h2>
     <ul>
       <li v-for="(movie, index) in movies" :key="index">
+        <img :src="getImageUrl(movie.poster_path)" alt="Copertina" width="200px" />
         <h3>{{ movie.title }}</h3>
         <p><strong>Titolo Originale:</strong> {{ movie.original_title }}</p>
 
@@ -32,6 +33,9 @@
 import { useFlag } from '../composables/useFlag';
 import { useRating } from '../composables/useRatings';
 
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/';
+const IMAGE_SIZE = 'w342';
+
 export default {
   name: 'MovieList',
   props: {
@@ -40,6 +44,10 @@ export default {
   setup() {
     const { getFlagUrl } = useFlag();
     const { getStarRating } = useRating();
+
+    function getImageUrl(posterPath) {
+      return `${IMAGE_BASE_URL}${IMAGE_SIZE}${posterPath}`;
+    }
 
     function getFlagUrlMovie(originalLanguage) {
       const languageToCountryCodeMap = {
@@ -53,7 +61,8 @@ export default {
 
     return {
       getFlagUrl: getFlagUrlMovie,
-      getStarRating
+      getStarRating,
+      getImageUrl
     };
   }
 };
