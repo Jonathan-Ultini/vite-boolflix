@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Risultati della Ricerca</h2>
+    <h2>Risultati Film</h2>
     <ul>
       <li v-for="(movie, index) in movies" :key="index">
         <h3>{{ movie.title }}</h3>
@@ -30,5 +30,14 @@ ul {
 
 li {
   margin-bottom: 20px;
+}
+
+h2 {
+  color: green
+}
+
+h3 {
+  color: greenyellow;
+
 }
 </style>
