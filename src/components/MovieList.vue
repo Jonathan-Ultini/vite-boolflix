@@ -1,48 +1,44 @@
 <template>
   <div>
-    <h2>Risultati Film</h2>
+    <h1>Risultati Film: </h1>
 
     <!-- Lista dei film -->
-    <ul>
-      <!-- Ciclo v-for per iterare su ogni film nell'array "movies" passato come prop.
-           Utilizza "index" come chiave unica per ogni elemento della lista. -->
-      <li v-for="(movie, index) in movies" :key="index">
-
-        <!-- Immagine del poster del film, generata usando la funzione getImageUrl che costruisce
-             l'URL completo dell'immagine a partire da una parte dell'URL ricevuta dall'API -->
-        <img :src="getImageUrl(movie.poster_path)" alt="Copertina" width="200px" />
-
+    <ul class="movie-list">
+      <!-- Ciclo v-for per iterare su ogni film -->
+      <li v-for="(movie, index) in movies" :key="index" class="movie-card" @mouseover="showDetails(index)"
+        @mouseleave="hideDetails">
+        <!-- Poster del film -->
+        <img :src="getImageUrl(movie.poster_path)" alt="Copertina" />
         <h3>{{ movie.title }}</h3>
 
-        <p><strong>Titolo Originale:</strong> {{ movie.original_title }}</p>
+        <!-- Dettagli del film -->
+        <div class="movie-info" v-if="hoveredMovie === index">
 
-        <p><strong>Lingua Originale:</strong> {{ movie.original_language }}</p>
+          <p><strong>Titolo Originale:</strong> {{ movie.original_title }}</p>
 
-        <p><strong>Bandiera della Lingua Originale:</strong>
-          <!-- Mostra la bandiera solo se la funzione getFlagUrl ritorna un URL valido -->
-          <span v-if="getFlagUrl(movie.original_language)">
-            <!-- Immagine della bandiera, con la funzione getFlagUrl che costruisce l'URL della bandiera -->
-            <img :src="getFlagUrl(movie.original_language)" alt="Bandiera" width="30px" />
-          </span>
-          <!-- Testo alternativo se la bandiera non è disponibile -->
-          <span v-else>Non disponibile</span>
-        </p>
+          <!-- <p><strong>Lingua Originale:</strong> {{ movie.original_language }}</p> -->
 
-        <!-- Voto del film, mostrato come stelle -->
-        <p><strong>Voto:</strong>
-          <!-- Ciclo per creare un'icona di stella piena per il numero di stelle calcolato da getStarRating -->
-          <span class="stars">
-            <i v-for="star in getStarRating(movie.vote_average)" :key="'filled-' + star" class="fas fa-star"></i>
-            <!-- Ciclo per creare le stelle vuote, sottraendo le stelle piene dal numero totale di stelle (5) -->
-            <i v-for="star in 5 - getStarRating(movie.vote_average)" :key="'empty-' + star" class="far fa-star"></i>
-          </span>
-        </p>
+          <p><strong>Lingua Originale:</strong>
+            <span v-if="getFlagUrl(movie.original_language)">
+              <img :src="getFlagUrl(movie.original_language)" alt="Bandiera" class="flag" />
+            </span>
+            <span v-else>Non disponibile</span>
+          </p>
 
-        <p><strong>Data di uscita:</strong> {{ movie.release_date }}</p>
+          <p><strong>Voto:</strong>
+            <span class="stars">
+              <i v-for="star in 5" :key="star"
+                :class="star <= getStarRating(movie.vote_average) ? 'fas fa-star' : 'far fa-star'"></i>
+            </span>
+          </p>
+
+          <p><strong>Data di uscita:</strong> {{ movie.release_date }}</p>
+        </div>
       </li>
     </ul>
   </div>
 </template>
+
 
 <script>
 // Importa le composable functions useFlag e useRating dai rispettivi file
@@ -60,7 +56,22 @@ export default {
   props: {
     movies: Array
   },
-
+  data() {
+    return {
+      hoveredMovie: null
+    };
+  },
+  methods: {
+    getImageUrl(posterPath) {
+      return `${IMAGE_BASE_URL}${IMAGE_SIZE}${posterPath}`;
+    },
+    showDetails(index) {
+      this.hoveredMovie = index;
+    },
+    hideDetails() {
+      this.hoveredMovie = null;
+    }
+  },
   // Definizione della logica del componente usando la funzione setup
   setup() {
     // Utilizza le funzioni importate per ottenere l'URL della bandiera e il voto in stelle
@@ -95,17 +106,49 @@ export default {
 </script>
 
 <style scoped>
+.movie-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.movie-card {
+  position: relative;
+  cursor: pointer;
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+}
+
+.movie-info {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  width: 100%;
+  padding: 10px;
+  display: none;
+}
+
+.movie-card:hover .movie-info {
+  display: block;
+}
+
 ul {
   list-style-type: none;
-  padding: 0;
+  padding: 20px;
 }
 
 li {
   margin-bottom: 20px;
 }
 
-h2 {
-  color: green;
+h1 {
+  color: white;
+  background-color: green;
+  font-weight: bold;
 }
 
 h3 {

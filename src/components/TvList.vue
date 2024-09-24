@@ -1,40 +1,41 @@
 <template>
   <div>
-    <h2>Risultati Serie TV</h2>
-    <ul>
-      <li v-for="(tvShow, index) in tvShows" :key="index"> <!-- Ciclo su ogni elemento della lista tvShows -->
-        <img :src="getImageUrl(tvShow.poster_path)" alt="Copertina" width="200px" />
+    <h1>Risultati Serie TV: </h1>
+    <ul class="tv-list">
+      <li v-for="(tvShow, index) in tvShows" :key="index" class="tv-card" @mouseover="showDetails(index)"
+        @mouseleave="hideDetails">
+        <!-- Immagine della copertina -->
+        <img :src="getImageUrl(tvShow.poster_path)" alt="Copertina" class="poster" />
 
+        <!-- Titolo della serie -->
         <h3>{{ tvShow.name }}</h3>
 
-        <p><strong>Titolo Originale: </strong> {{ tvShow.original_name }}</p>
+        <!-- Dettagli visualizzati al passaggio del mouse -->
+        <div v-if="hoveredTvShow === index" class="tv-info">
+          <p><strong>Titolo Originale:</strong> {{ tvShow.original_name }}</p>
+          <!-- <p><strong>Lingua Originale:</strong> {{ tvShow.original_language }}</p> -->
+          <p><strong>Lingua originale:</strong>
+            <span v-if="tvShow.origin_country.length > 0">
+              <img v-if="getFlagUrl(tvShow.origin_country[0])" :src="getFlagUrl(tvShow.origin_country[0])"
+                alt="Bandiera" class="flag" />
+              <span v-else>Non disponibile</span>
+            </span>
+            <span v-else>Non disponibile</span>
+          </p>
 
-        <p><strong>Lingua Originale: </strong> {{ tvShow.original_language }}</p>
-
-        <p><strong>Paese di Origine: </strong>
-          <!-- Se la serie ha paesi di origine definiti -->
-          <span v-if="tvShow.origin_country.length > 0">
-            <!-- Se la bandiera del paese di origine è disponibile -->
-            <img v-if="getFlagUrl(tvShow.origin_country[0])" :src="getFlagUrl(tvShow.origin_country[0])" alt="Bandiera"
-              width="30px" />
-            <span v-else>Non disponibile</span> <!-- Se la bandiera non è disponibile -->
-          </span>
-          <span v-else>Non disponibile</span> <!-- Se non è definito nessun paese di origine -->
-        </p>
-
-        <!-- Voto medio della serie TV visualizzato con stelle -->
-        <p><strong>Voto:</strong>
-          <span class="stars">
-            <!-- Stelle piene in base al voto medio -->
-            <i v-for="star in getStarRating(tvShow.vote_average)" :key="'filled-' + star" class="fas fa-star"></i>
-            <!-- Stelle vuote per riempire fino a 5 stelle -->
-            <i v-for="star in 5 - getStarRating(tvShow.vote_average)" :key="'empty-' + star" class="far fa-star"></i>
-          </span>
-        </p>
+          <!-- Voto medio della serie TV -->
+          <p><strong>Voto:</strong>
+            <span class="stars">
+              <i v-for="star in getStarRating(tvShow.vote_average)" :key="'filled-' + star" class="fas fa-star"></i>
+              <i v-for="star in 5 - getStarRating(tvShow.vote_average)" :key="'empty-' + star" class="far fa-star"></i>
+            </span>
+          </p>
+        </div>
       </li>
     </ul>
   </div>
 </template>
+
 
 <script>
 import { useFlag } from '../composables/useFlag'; // Importa la funzione per ottenere l'URL della bandiera
@@ -49,6 +50,22 @@ export default {
   props: {
     tvShows: Array // Definisce la proprietà tvShows come un array 
   },
+  data() {
+    return {
+      hoveredTvShow: null // Stato per gestire il mouse hover
+    };
+  },
+  methods: {
+    getImageUrl(posterPath) {
+      return `${IMAGE_BASE_URL}${IMAGE_SIZE}${posterPath}`;
+    },
+    showDetails(index) {
+      this.hoveredTvShow = index;
+    },
+    hideDetails() {
+      this.hoveredTvShow = null;
+    }
+  },
   // Definizione della logica del componente usando la funzione setup
   setup() {
     // Funzione per ottenere l'URL della bandiera
@@ -56,40 +73,67 @@ export default {
     // Funzione per ottenere il voto in stelle
     const { getStarRating } = useRating();
 
-    // Funzione per generare l'URL completo della copertina della serie TV
-    function getImageUrl(posterPath) {
-      return `${IMAGE_BASE_URL}${IMAGE_SIZE}${posterPath}`;
-    }
-
     return {
       getFlagUrl, // Rende disponibile la funzione per ottenere l'URL della bandiera
       getStarRating, // Rende disponibile la funzione per ottenere il rating in stelle
-      getImageUrl // Rende disponibile la funzione per ottenere l'URL della copertina
     };
   }
 };
 </script>
 
 <style scoped>
+.tv-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.tv-card {
+  position: relative;
+  cursor: pointer;
+}
+
+.tv-card img.poster {
+  width: 100%;
+  height: auto;
+}
+
+.tv-info {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  width: 100%;
+  padding: 10px;
+  display: none;
+}
+
+.tv-card:hover .tv-info {
+  display: block;
+}
+
+
+.stars {
+  color: gold;
+  font-size: 20px;
+}
+
 ul {
   list-style-type: none;
-  padding: 0;
+  padding: 20px;
 }
 
 li {
   margin-bottom: 20px;
 }
 
-h2 {
-  color: red;
+h1 {
+  color: white;
+  background-color: orange;
+  font-weight: bold
 }
 
 h3 {
   color: orange;
-}
-
-.stars {
-  color: gold;
-  font-size: 20px;
 }
 </style>

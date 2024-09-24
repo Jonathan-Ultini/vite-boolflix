@@ -1,0 +1,32 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #141414;
+  color: #fff;
+}
+
+.header {
+  background-color: #141414;
+  padding: 20px;
+}
+
+.movie-card img,
+.tv-card img {
+  border-radius: 8px;
+}
+
+.movie-info,
+.tv-info {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.movie-card:hover .flag {
+  transform: none;
+  width: 40px;
+}
+
+.tv-card:hover .flag {
+  transform: none;
+  width: 40px;
+}

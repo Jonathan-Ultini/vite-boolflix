@@ -1,9 +1,11 @@
 <template>
-  <div>
-    <h2>Search Bar</h2>
-    <input type="text" v-model="searchQuery" placeholder="Cerca un film..." @keyup.enter="submitSearch" />
+  <div class="d-flex">
+    <!-- <h2>Search Bar</h2> -->
+    <input class="form-control me-2" type="search" v-model="searchQuery" placeholder="Cerca un film..."
+      @keyup.enter="submitSearch" />
     <!-- Input di testo legato al modello 'searchQuery', la ricerca viene inviata anche quando si preme Invio -->
-    <button @click="submitSearch">Cerca</button> <!-- Bottone che attiva la ricerca quando viene cliccato -->
+    <button class="btn btn-outline-success" @click="submitSearch">Cerca</button>
+    <!-- Bottone che attiva la ricerca quando viene cliccato -->
   </div>
 </template>
 
