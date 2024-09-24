@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h1>Ricerca Film</h1>
-    <SearchBar @search-query="handleSearch" />
+    <!-- <h1>Ricerca Film</h1> -->
+
+    <Header @search-query="handleSearch" />
     <!-- Componente di ricerca che emette l'evento 'search-query' per avviare la ricerca -->
 
     <Loader v-if="loading" /> <!-- Mostra il caricamento se 'loading' è true -->
@@ -15,6 +16,7 @@
 </template>
 
 <script>
+import Header from './components/Header.vue';  // Importa header
 import SearchBar from './components/SearchBar.vue'; // Importa il componente di ricerca
 import MovieList from './components/MovieList.vue'; // Importa il componente per la lista dei film
 import Loader from './components/Loader.vue'; // Importa il componente di caricamento
@@ -29,6 +31,7 @@ export default {
     };
   },
   components: {
+    Header,
     SearchBar, // Registra il componente di ricerca
     MovieList, // Registra il componente della lista dei film
     Loader, // Registra il componente di caricamento
